@@ -6,38 +6,165 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <link rel="stylesheet" href="dist/animate.css">
-  <link rel="stylesheet" href="dist/temOne.css">
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+  <link rel="stylesheet" href="dist/main.css">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/css/swiper.min.css" rel="stylesheet">
 </head>
 <body>
   <div id="app">
-    <div class="page">
-      <div class="animated slideInLeft left fast"></div>
-      <div class="animated slideInRight right fast"></div>
-      <div class="animated fadeInUp delay-1s" style="text-align:center">
-        嘻嘻嘻 && 哈哈哈
+    <div class="edit">
+      <div style="height:4rem;font-size:1.66rem;" class="center_all">编辑</div>
+      <div class="tip_text">点击卡片预览当前页</div>
+      <audio ref="music" class="music_player" loop > 
+        <source src="http://sc1.111ttt.cn:8282/2018/1/03m/13/396131232171.m4a?tflag=1519095601&pin=6cd414115fdb9a950d827487b16b5f97#.mp3" type="audio/mpeg">
+      </audio>
+      <swiper :options="swiperOption">
+        <swiper-slide>
+          <div class="edit_content" style="background: url(./dist/images/1.jpg)">
+            <div class="music_btn_box center_all" @click="musicPlayer">
+              <div class="music_btn_display"></div>
+            </div>
+            <div class="edit_btn center_all edit_text_btn">
+                <img src="./dist/images/pen.png">
+              </div> 
+              <div class="edit_btn center_all edit_pic_btn">
+                <img src="./dist/images/camera.png">
+              </div> 
+          </div>
+        </swiper-slide>
+        <swiper-slide>
+          <div class="edit_content" style="background: url(./dist/images/2.jpg)">
+            <div class="edit_btn center_all edit_text_btn">
+                <img src="./dist/images/pen.png">
+              </div> 
+              <div class="edit_btn center_all edit_pic_btn">
+                <img src="./dist/images/camera.png">
+              </div> 
+          </div>
+        </swiper-slide>
+        <swiper-slide>
+          <div class="edit_content" style="background: url(./dist/images/3.jpg)">
+            <div class="edit_btn center_all edit_text_btn">
+                <img src="./dist/images/pen.png">
+              </div> 
+              <div class="edit_btn center_all edit_pic_btn">
+                <img src="./dist/images/camera.png">
+              </div> 
+          </div>
+        </swiper-slide>
+        <swiper-slide>
+          <div class="edit_content" style="background: url(./dist/images/4.jpg)">
+            <div class="edit_btn center_all edit_text_btn">
+                <img src="./dist/images/pen.png">
+              </div> 
+              <div class="edit_btn center_all edit_pic_btn">
+                <img src="./dist/images/camera.png">
+              </div> 
+          </div>
+        </swiper-slid>
+      </swiper>
+      <div class="func_footer">
+        <div class="func_footer_item" @click="orderPage">
+          <img src="./dist/images/order.png"><span>页面排序</span>
+        </div>
+        <div class="func_footer_item">
+          <img src="./dist/images/set.png"><span>设置</span>
+        </div>
+        <div class="func_footer_item"> 
+          <img src="./dist/images/share.png"><span>去分享</span>
+        </div>
+        <div class="func_footer_item">
+          <img src="./dist/images/preview.png"><span>预览</span>
+        </div>
       </div>
-      <div class="edit_btn" onclick="wx.miniProgram.navigateTo({url:'../index/index'})"></div>
+      <template v-if="orderShow">
+        <div class="black_cover"></div>
+        <div class="order_show">
+          <span>长按拖动排序</span>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </template>
     </div>
-      <!-- {{ message }} -->
+    <!-- <div v-for="element in myArray" :key="element.id">{{element.name}}</div> -->
+    <!-- <draggable v-model="myArray" :options="{group:'people'}" @start="drag=true" @end="drag=false">
+      <div v-for="element in myArray" :key="element.id">{{element.name}}</div>
+    </draggable> -->
   </div>
 </body>
-</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/js/swiper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.7.0/Sortable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.15.0/vuedraggable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-awesome-swiper@3.1.2/dist/vue-awesome-swiper.js"></script>
 <script>
-var app = new Vue({
+// import draggable from 'vuedraggable'
+Vue.use(VueAwesomeSwiper)
+new Vue({
   el: '#app',
   data: {
-    message: 'Hello Vue!'
+    visible: false,
+    message: 'Hello Vue!',
+    myArray: [
+      {
+        name: "1111111111111111",
+        id: 1
+      },
+      {
+        name: "2222222222222222",
+        id: 2
+      }
+    ],
+    swiperOption: {
+      slidesPerView: 'auto',
+      centeredSlides: true,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true
+      }
+    },
+    musicPlay: false,
+    orderShow: false
+  },
+  // components: {
+  //   draggable: draggable
+  // },
+  created() {
+    
   },
   methods: {
-    editPic() {
-//       wx.miniProgram.postMessage({ data: {foo: 'bar'} }) 
-//       wx.miniProgram.chooseImage(function(res) {
-// console.log(res) })
+    postMessage() {
       wx.miniProgram.postMessage({ data: 'foo' })
-      console.log('res')
+      console.log('@postMessage')
+    },
+    editPic() {
+      wx.chooseImage({
+        count: 1,
+        sizeType: ['original', 'compressed'],
+        sourceType: ['album', 'camera'],
+        success(res) {
+          // tempFilePath可以作为img标签的src属性显示图片
+          // const tempFilePaths = res.tempFilePaths
+          console.log(res)
+        }
+      })
+      console.log('@editPic')
+    },
+    musicPlayer() {
+      this.$refs.music.autoplay = true
+      let player = this.$refs.music
+      this.musicPlay = !this.musicPlay 
+      this.musicPlay && player.play()
+      !this.musicPlay && player.pause()
+    },
+    orderPage() {
+      this.orderShow = !this.orderShow
+      console.log(this.orderShow)
     }
   }
 })
 </script>
+</html>
